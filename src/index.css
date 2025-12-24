@@ -1,0 +1,59 @@
+@import "tailwindcss";
+/* src/index.css or global.css */
+@layer components {
+  .card-days {
+    @apply h-10 w-10 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200;
+  }
+  .social-buttons {
+    @apply w-7.5 h-7.5 rounded-full flex items-center justify-center text-white text-[18px] transition-transform duration-200 hover:translate-y-0.75;
+  }
+}
+
+.dashboard-layout {
+  display: flex;
+}
+
+.dashboard-content {
+  flex: 1;
+  min-height: 100vh;
+  background: #f9fafb;
+}
+
+.topbar {
+  background: white;
+  display: flex;
+  align-items: center;
+}
+
+.menu-btn {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.notification-container {
+  position: relative;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+}
+.notification-bell {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 50%;
+  height: 25px;
+  width: 25px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .menu-btn {
+    display: none;
+  }
+}
