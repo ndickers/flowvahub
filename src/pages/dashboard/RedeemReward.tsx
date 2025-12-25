@@ -1,5 +1,72 @@
 import { Tab, TabGroup, TabList, TabPanels, TabPanel } from "@headlessui/react";
 import { Fragment } from "react/jsx-runtime";
+import Card from "../../components/Card";
+
+const rewards = [
+  {
+    icon: "💸",
+    title: "$5 Bank Transfer",
+    content: "The $5 equivalent will be transferred to your bank account.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "💸",
+    title: "$5 PayPal International",
+    content:
+      "Receive a $5 PayPal balance transfer directly to your PayPal account email.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "🎁",
+    title: "$5 Virtual Visa Card",
+    content:
+      "Use your $5 prepaid card to shop anywhere Visa is accepted online.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "🎁",
+    title: "$5 Apple Gift Card",
+    content:
+      "Redeem this $5 Apple Gift Card for apps, games, music, movies, and more on the App Store and iTunes.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "🎁",
+    title: "$5 Google Play Card",
+    content:
+      "Use this $5 Google Play Gift Card to purchase apps, games, movies, books, and more on the Google Play Store.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "🎁",
+    title: "$5 Amazon Gift Card",
+    content:
+      "Get a $5 digital gift card to spend on your favorite tools or platforms.",
+    points: "⭐ 5000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "🎁",
+    title: "$5 Amazon Gift Card",
+    content:
+      "Get a $10 digital gift card to spend on your favorite tools or platforms.",
+    points: "⭐ 10000 pts",
+    button: "Locked",
+  },
+  {
+    icon: "📚",
+    title: "Free Udemy Course",
+    content: "Coming Soon!",
+    points: "⭐ 0 pts",
+    button: "Coming Soon",
+  },
+];
+
 export default function RedeemReward() {
   return (
     <div>
@@ -26,7 +93,7 @@ export default function RedeemReward() {
                       : "bg-[#E2E8F0] text-[#CBD5E0]"
                   }`}
                 >
-                  8
+                  {rewards.length}
                 </span>
               </div>
             )}
@@ -48,7 +115,10 @@ export default function RedeemReward() {
                       : "bg-[#E2E8F0] text-[#CBD5E0]"
                   }`}
                 >
-                  8
+                  {
+                    rewards.filter((reward) => reward.button === "UnLocked")
+                      .length
+                  }
                 </span>
               </div>
             )}
@@ -71,7 +141,10 @@ export default function RedeemReward() {
                       : "bg-[#E2E8F0] text-[#CBD5E0]"
                   }`}
                 >
-                  7
+                  {
+                    rewards.filter((reward) => reward.button === "Locked")
+                      .length
+                  }
                 </span>
               </div>
             )}
@@ -93,7 +166,10 @@ export default function RedeemReward() {
                       : "bg-[#E2E8F0] text-[#CBD5E0]"
                   }`}
                 >
-                  1
+                  {
+                    rewards.filter((reward) => reward.button === "Coming Soon")
+                      .length
+                  }
                 </span>
               </div>
             )}
@@ -101,34 +177,33 @@ export default function RedeemReward() {
         </TabList>
         <TabPanels>
           <TabPanel className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] mt-6">
-            <div className="border opacity-[0.7] cursor-not-allowed border-[#E9D4FF] bg-white rounded-xl p-6 shadow-[0_2px_8px_rgba(0,0,0,0.05)] relative overflow-hidden transition-all duration-200 ease-linear hover:-translate-y-1.25 hover:shadow-[0_6px_16px_rgba(0,0,0,0.1)]">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center m-[0_auto_1rem] text-[1.5rem] text-[#9013fe] bg-[#E9D4FF]">
-                💸
-              </div>
-              <h4 className="text-center text-[1.1rem] font-semibold mb-2">
-                $5 Bank Transfer
-              </h4>
-              <p className="text-center text-[0.9rem] text-[#2D3748] mb-4">
-                The $5 equivalent will be transferred to your bank account.
-              </p>
-              <div className="flex items-center justify-center text-[#9013fe] font-semibold mb-4">
-                ⭐ 5000 pts
-              </div>
-              <button
-                disabled
-                className="w-full font-semibold p-3 rounded-lg transition-all duration-300 ease-in-out bg-[#d7e0ed] text-white"
-              >
-                Locked
-              </button>
-            </div>
+            {rewards.map((reward, index) => (
+              <Card key={index} {...reward} />
+            ))}
           </TabPanel>
-          <TabPanel>Content 2</TabPanel>
-          <TabPanel>Content 3</TabPanel>
-          <TabPanel>Content 4</TabPanel>
+          <TabPanel className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] mt-6">
+            {rewards
+              .filter((reward) => reward.button === "UnLocked")
+              .map((reward, index) => (
+                <Card key={index} {...reward} />
+              ))}
+          </TabPanel>
+          <TabPanel className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] mt-6">
+            {rewards
+              .filter((reward) => reward.button === "Locked")
+              .map((reward, index) => (
+                <Card key={index} {...reward} />
+              ))}
+          </TabPanel>
+          <TabPanel className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(300px,1fr))] mt-6">
+            {rewards
+              .filter((reward) => reward.button === "Coming Soon")
+              .map((reward, index) => (
+                <Card key={index} {...reward} />
+              ))}
+          </TabPanel>
         </TabPanels>
       </TabGroup>
-
-      <div></div>
     </div>
   );
 }

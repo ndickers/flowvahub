@@ -28,6 +28,7 @@ export default function EarnPoints() {
   const [open, setOpen] = useState(false);
   const [openShare, setOpenShare] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [email, setEmail] = useState("");
   const { user } = useAuth();
   const copyUrl = `https://app.flowvahub.com/signup/?ref=${user?.email?.substring(
     0,
@@ -345,10 +346,11 @@ export default function EarnPoints() {
               <input
                 type="email"
                 id="email"
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="user@example.com"
                 className=" peer w-full border text-base py-2.5 px-3.5  border-[#EDE9FE] transition-all ease-linear duration-200 rounded-md outline-none focus:border-[#9013fe]"
                 required
-                value=""
+                value={email}
               />
               <div className="pointer-events-none absolute inset-0 rounded-md peer-focus:shadow-[0_0_0_3px_rgba(124,58,237,0.1)]"></div>
             </div>
