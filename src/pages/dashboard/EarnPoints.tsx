@@ -6,6 +6,7 @@ import {
   FaFacebookF,
   FaLinkedinIn,
   FaWhatsapp,
+  FaLayerGroup,
 } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
@@ -16,9 +17,31 @@ import {
   LucideShare2,
   LucideUsers,
   LucideCopy,
+  LucideCheck,
 } from "lucide-react";
 import starIcon from "../../assets/yellow-star.png";
+import { useState } from "react";
+import Modal from "../../components/Modal";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 export default function EarnPoints() {
+  const [open, setOpen] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const { user } = useAuth();
+  const copyUrl = `https://app.flowvahub.com/signup/?ref=${user?.email?.substring(
+    0,
+    5
+  )}2679`;
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(copyUrl);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 3500);
+  };
   return (
     <div>
       <h2 className="text-lg md:text-2xl my-3 text-black border border-l-4 border-t-0 border-b-0 border-r-0 border-[#9301fe] pl-3 font-semibold">
@@ -129,11 +152,19 @@ export default function EarnPoints() {
             </div>
           </div>
           <div className="px-4 py-1.25 flex gap-2 justify-between items-center border border-t-[#f3f4f6] border-b-0 border-r-0 border-l-0">
-            <button className="bg-[#9013fe] text-nowrap hover:bg-[#8628da] text-white flex gap-1.5 items-center  py-2 px-4 rounded-full font-semibold text-sm">
+            <NavLink
+              to="/register"
+              className="bg-[#9013fe] text-nowrap hover:bg-[#8628da] text-white flex gap-1.5 items-center  py-2 px-4 rounded-full font-semibold text-sm"
+            >
               <FaUserPlus fill="currentColor" />
               Sign up
-            </button>
-            <button className="bg-[linear-gradient(45deg,#9013FE,#FF8687)] text-nowrap text-white flex gap-1.5 items-center  py-2 px-4 rounded-full font-semibold text-sm">
+            </NavLink>
+            <button
+              onClick={() => {
+                setOpen(true);
+              }}
+              className="bg-[linear-gradient(45deg,#9013FE,#FF8687)] text-nowrap text-white flex gap-1.5 items-center  py-2 px-4 rounded-full font-semibold text-sm"
+            >
               <FaGift fill="currentColor" />
               Claim 50 pts
             </button>
@@ -183,7 +214,12 @@ export default function EarnPoints() {
                 <div>
                   <p className="font-medium text-sm">Share your tool stack</p>
                 </div>
-                <button className="bg-[#eef2ff] hover:text-white hover:bg-[#9013fe] text-[#9013fe] py-2 px-4 rounded-full font-semibold text-sm transition-all duration-200 inline-flex items-center gap-2 border-0">
+                <button
+                  onClick={() => {
+                    setOpenShare(true);
+                  }}
+                  className="bg-[#eef2ff] hover:text-white hover:bg-[#9013fe] text-[#9013fe] py-2 px-4 rounded-full font-semibold text-sm transition-all duration-200 inline-flex items-center gap-2 border-0"
+                >
                   <LucideShare2 stroke="currentColor" />
                   Share
                 </button>
@@ -234,10 +270,17 @@ export default function EarnPoints() {
                   <input
                     type="text"
                     className="flex-1  border border-gray-300 rounded-md px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent w-full pr-10"
-                    value="https://app.flowvahub.com/signup/?ref=ndick2679"
+                    value={copyUrl}
                   />
-                  <button className="absolute right-2.5 top-1/2 -translate-y-1/2 cursor-pointer z-10">
-                    <LucideCopy stroke="#9301fe" />
+                  <button
+                    onClick={handleCopy}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
+                  >
+                    {copied ? (
+                      <LucideCheck className="text-green-600" />
+                    ) : (
+                      <LucideCopy className="text-[#9301fe]" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -271,6 +314,116 @@ export default function EarnPoints() {
           </div>
         </div>
       </section>
+      <Modal open={open} setOpen={setOpen}>
+        <div className="ant-modal-header">
+          <div className="ant-modal-title" id=":r1:">
+            <h1 className="md:text-lg font-semibold">Claim Your 25 Points</h1>
+          </div>
+        </div>
+        <div>
+          <p className="text-[0.9rem] text-[#6c757d]">
+            Sign up for Reclaim (free, no payment needed), then fill the form
+            below:
+          </p>
+          <li className="text-[0.9rem] text-[#6c757d]">
+            <ul>1️⃣ Enter your Reclaim sign-up email.</ul>
+            <ul>
+              2️⃣ Upload a screenshot of your Reclaim profile showing your email.
+            </ul>
+          </li>
+          <p className="text-[0.9rem] text-[#6c757d]">
+            After verification, you’ll get 25 Flowva Points! 🎉😊
+          </p>
+          <form className="mt-3">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium mb-2 text-[#111827]"
+            >
+              Email used on Reclaim
+            </label>
+            <div className="relative group w-full mb-5">
+              <input
+                type="email"
+                id="email"
+                placeholder="user@example.com"
+                className=" peer w-full border text-base py-2.5 px-3.5  border-[#EDE9FE] transition-all ease-linear duration-200 rounded-md outline-none focus:border-[#9013fe]"
+                required
+                value=""
+              />
+              <div className="pointer-events-none absolute inset-0 rounded-md peer-focus:shadow-[0_0_0_3px_rgba(124,58,237,0.1)]"></div>
+            </div>
+            <label
+              htmlFor="file"
+              className="block text-sm mb-2 font-medium text-[#111827]"
+            >
+              Upload screenshot (mandatory)
+            </label>
+            <label className="p-2 cursor-pointer hover:bg-[rgba(29,28,28,0.05)] block border border-dashed border-[#e9ecef] rounded-lg bg-[#f9f9f9] transition-all duration-200">
+              <p className="text-center flex justify-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-cloud-download"
+                >
+                  <path d="M12 13v8l-4-4"></path>
+                  <path d="m12 21 4-4"></path>
+                  <path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"></path>
+                </svg>
+                <span className="text-base">Choose file</span>
+              </p>
+              <input className="hidden" type="file" accept="image/*" required />
+            </label>
+            <div className="flex gap-3 justify-end mt-4">
+              <button
+                onClick={() => {
+                  setOpen(false);
+                }}
+                type="button"
+                className="p-[0.5rem_1rem] rounded-lg font-semibold transition-all duration-200 hover:bg-[#d1d5db] bg-[#e9ecef] text-[#020617]"
+              >
+                Cancel
+              </button>
+              <button className="p-[0.5rem_1rem] rounded-lg font-semibold transition-all duration-200 bg-[#9103fe] text-white hover:bg-[#FF8687]">
+                Submit Claim
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+      <Modal open={openShare} setOpen={setOpenShare}>
+        <div
+          style={{
+            top: "20px",
+            maxWidth: "380px",
+            margin: "0px auto",
+            padding: "5px",
+            width: "100%",
+            transformOrigin: "441px -29.75px 0px",
+          }}
+        >
+          <div className="text-center">
+            <h2 className="text-2xl font-bold mb-4 text-black">
+              Share Your Stack
+            </h2>
+            <div className="flex justify-center">
+              <div className="w-10 h-10  rounded-full flex justify-center items-center mb-4 text-[1rem] bg-[#E9D4FF] text-[#9013FE]">
+                <FaLayerGroup fill="currentColor" />
+              </div>
+            </div>
+            <p className="text-gray-600 mb-4">
+              You have no stack created yet, go to Tech Stack to create one.
+            </p>
+            <div className="space-y-2 h-full m-h-[300px] overflow-y-auto"></div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
